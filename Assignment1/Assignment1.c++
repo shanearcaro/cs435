@@ -18,37 +18,47 @@ int main(int argc, char* argv[]) {
         std::cout << "Enter file: ";
         getline(std::cin, userInput);
         std::fstream file(userInput);
+        std::ofstream outFile(userInput.substr(0, userInput.find_last_of(".")) + "_output.txt");
         if (file.is_open()) {
             while(!file.eof()) {
                 // Read and transform data from a file to work with insertion sort
                 getline(file, userInput);
                 std::string size = userInput.substr(0, userInput.find(" "));
-                const char* c_size = const_cast<char*>(size.c_str());
+                const char* c_size = size.c_str();
                 std::string type = userInput.substr(userInput.find(" ") + 1, userInput.length());
                 const char* c_type = type.c_str();
 
-                std::cout << "Size: " << c_size << " Type: " << c_type << std::endl;
+                // std::cout << "Size: " << c_size << " Type: " << c_type << std::endl;
+                outFile << "Size: " << c_size << " Type: " << c_type << std::endl;
 
                 // Data is transformed at this point, run the algorithm and print useful information
                 std::vector<int> vec = createVector(atoi(c_size), c_type);
                 if (vec.size() <= 50) {
-                    std::cout << "Original Array: ";
+                    // std::cout << "Original Array: ";
+                    outFile << "Original Array: ";
                     for (int i = 0; i < vec.size(); i++) {
-                        std::cout << vec.at(i) << " ";
+                        // std::cout << vec.at(i) << " ";
+                        outFile << vec.at(i) << " ";
                     }
-                    std::cout << std::endl;
+                    // std::cout << std::endl;
+                    outFile << std::endl;
                 }
                 insertionSort(vec);
                 if (vec.size() <= 50) {
-                    std::cout << "Sorted Array:   ";
+                    // std::cout << "Sorted Array:   ";
+                    outFile << "Sorted Array:   ";
                     
                     for (int i = 0; i < vec.size(); i++) {
-                        std::cout << vec.at(i) << " ";
+                        // std::cout << vec.at(i) << " ";
+                        outFile << vec.at(i) << " ";
                     }
-                    std::cout << std::endl;
+                    // std::cout << std::endl;
+                    outFile << std::endl;
                 }
-                std::cout << "Key Comparisons: " << COMPCOUNT << std::endl;
-                std::cout << std::endl;
+                // std::cout << "Key Comparisons: " << COMPCOUNT << std::endl;
+                outFile << "Key Comparisons: " << COMPCOUNT << std::endl;
+                // std::cout << std::endl;
+                outFile << std::endl;
 
                 // Reset compcount after every trial
                 COMPCOUNT = 0;
@@ -61,12 +71,37 @@ int main(int argc, char* argv[]) {
     }
     else if (userInput == "m" || userInput == "M") {
         // Read input from the user
-        // std::vector<int> vec = createVector(10, 'w');
-        // insertionSort(vec);
-        // for (int i = 0; i < vec.size(); i++) {
-        //     std::cout << vec.at(i) << " ";
-        // }
-        // std::cout << std::endl;
+        std::string userSize;
+        std::cout << "Array size: ";
+        getline(std::cin, userSize);
+        const char* c_size = userSize.c_str();
+        std::cout << "What is this: " << c_size << std::endl;
+
+        std::cout << "Array (W)orst, (b)est, or (r)andom case: ";
+        getline(std::cin, userInput);
+        const char* c_type = userInput.c_str();
+
+
+        std::cout << "Size: " << c_size << " Type: " << c_type << std::endl;
+        std::vector<int> vec = createVector(atoi(c_size), c_type);
+        if (vec.size() <= 50) {
+            std::cout << "Original Array: ";
+            for (int i = 0; i < vec.size(); i++) {
+                std::cout << vec.at(i) << " ";
+            }
+            std::cout << std::endl;
+        }
+        insertionSort(vec);
+        if (vec.size() <= 50) {
+            std::cout << "Sorted Array:   ";
+                    
+            for (int i = 0; i < vec.size(); i++) {
+                std::cout << vec.at(i) << " ";
+            }
+            std::cout << std::endl;
+        }
+        std::cout << "Key Comparisons: " << COMPCOUNT << std::endl;
+        std::cout << std::endl;
     }
     else {
         std::cout << "Invalid input." << std::endl;
