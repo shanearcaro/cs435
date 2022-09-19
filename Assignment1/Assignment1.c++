@@ -109,15 +109,23 @@ int main(int argc, char* argv[]) {
 // Create a vector based on a size and type requirement.
 std::vector<int> createVector(int size, const char* type) {
     std::vector<int> vec;
-    srand(unsigned(time(NULL)));
-    for (int i = 0; i < size; i++) {
-        if (*type == 'w') {
-            vec.push_back(size - (i + 1));
-        }
-        else if (*type == 'b')
-            vec.push_back(i);
-        else if (*type == 'r')
-            vec.push_back(rand() % size);
+    switch(*type) {
+        case 'w':
+            for (int i = 0; i < size; i++) {
+                vec.push_back(size - (i + 1));
+            }
+            break;
+        case 'b':
+            for (int i = 0; i < size; i++) {
+                vec.push_back(i);
+            }
+            break;
+        case 'r':
+            srand(unsigned(time(NULL)));
+            for (int i = 0; i < size; i++) {
+                vec.push_back(rand() % size);
+            }
+            break;
     }
     return vec;
 }
