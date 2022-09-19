@@ -3,12 +3,17 @@
 #include <fstream>
 #include <string>
 
+// Global variable to keep track of the number of comparisons that take place per run of insertion sort
 int COMPCOUNT = 0;
 
+// Create a vector based on a size and type requirement.
 std::vector<int> createVector(int size, const char* type);
+
+// Run the Insertion Sort algorithm on a vector
 void insertionSort(std::vector<int>& vec);
 
 int main(int argc, char* argv[]) {
+    // Get input from the user
     std::string userInput;
     std::cout << "Would you like (f)ile or (m)anual input? ";
     getline(std::cin, userInput);
@@ -23,41 +28,31 @@ int main(int argc, char* argv[]) {
             while(!file.eof()) {
                 // Read and transform data from a file to work with insertion sort
                 getline(file, userInput);
-                std::string size = userInput.substr(0, userInput.find(" "));
-                const char* c_size = size.c_str();
-                std::string type = userInput.substr(userInput.find(" ") + 1, userInput.length());
-                const char* c_type = type.c_str();
-
-                // std::cout << "Size: " << c_size << " Type: " << c_type << std::endl;
+                const char* c_size = userInput.substr(0, userInput.find(" ")).c_str();
+                const char* c_type = userInput.substr(userInput.find(" ") + 1, userInput.length()).c_str();
                 outFile << "Size: " << c_size << " Type: " << c_type << std::endl;
 
                 // Data is transformed at this point, run the algorithm and print useful information
                 std::vector<int> vec = createVector(atoi(c_size), c_type);
+                // Dont print the vector if above a certain size
                 if (vec.size() <= 50) {
-                    // std::cout << "Original Array: ";
                     outFile << "Original Array: ";
                     for (int i = 0; i < vec.size(); i++) {
-                        // std::cout << vec.at(i) << " ";
                         outFile << vec.at(i) << " ";
                     }
-                    // std::cout << std::endl;
                     outFile << std::endl;
                 }
                 insertionSort(vec);
+                // Dont print the vector if above a certain size
                 if (vec.size() <= 50) {
-                    // std::cout << "Sorted Array:   ";
                     outFile << "Sorted Array:   ";
                     
                     for (int i = 0; i < vec.size(); i++) {
-                        // std::cout << vec.at(i) << " ";
                         outFile << vec.at(i) << " ";
                     }
-                    // std::cout << std::endl;
                     outFile << std::endl;
                 }
-                // std::cout << "Key Comparisons: " << COMPCOUNT << std::endl;
                 outFile << "Key Comparisons: " << COMPCOUNT << std::endl;
-                // std::cout << std::endl;
                 outFile << std::endl;
 
                 // Reset compcount after every trial
@@ -69,6 +64,7 @@ int main(int argc, char* argv[]) {
             exit(1);
         }
     }
+    // If user wants to enter data manually
     else if (userInput == "m" || userInput == "M") {
         // Read input from the user
         std::string userSize;
@@ -81,9 +77,9 @@ int main(int argc, char* argv[]) {
         getline(std::cin, userInput);
         const char* c_type = userInput.c_str();
 
-
         std::cout << "Size: " << c_size << " Type: " << c_type << std::endl;
         std::vector<int> vec = createVector(atoi(c_size), c_type);
+        // Dont print the vector if above a certain size
         if (vec.size() <= 50) {
             std::cout << "Original Array: ";
             for (int i = 0; i < vec.size(); i++) {
@@ -92,6 +88,7 @@ int main(int argc, char* argv[]) {
             std::cout << std::endl;
         }
         insertionSort(vec);
+        // Dont print the vector if above a certain size
         if (vec.size() <= 50) {
             std::cout << "Sorted Array:   ";
                     
@@ -109,6 +106,7 @@ int main(int argc, char* argv[]) {
     }
 }
 
+// Create a vector based on a size and type requirement.
 std::vector<int> createVector(int size, const char* type) {
     std::vector<int> vec;
     srand(unsigned(time(NULL)));
@@ -124,6 +122,7 @@ std::vector<int> createVector(int size, const char* type) {
     return vec;
 }
 
+// Run the Insertion Sort algorithm on a vector
 void insertionSort(std::vector<int>& vec) {
     int i = 1, j;
     while (i < vec.size()) {
